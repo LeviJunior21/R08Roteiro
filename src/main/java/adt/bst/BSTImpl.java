@@ -63,6 +63,7 @@ public class BSTImpl<T extends Comparable<T>> implements BST<T> {
 			this.root.setData(element);
 			this.root.setLeft(left);
 			this.root.setRight(right);
+			this.root.setParent(this.root);
 			
 			left.setParent(this.root);
 			right.setParent(this.root);
@@ -82,14 +83,36 @@ public class BSTImpl<T extends Comparable<T>> implements BST<T> {
 
 	@Override
 	public BSTNode<T> maximum() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Not implemented yet!");
+		BSTNode<T> found = null;
+		if (!this.isEmpty()) {
+			found = this.searchMaximum(this.root);
+		}
+		return found;
 	}
 
+	private BSTNode<T> searchMaximum(BSTNode<T> node) {
+		BSTNode<T> found = null;
+		if (!node.getRight().isEmpty()) {
+			found = this.searchMaximum((BSTNode) node.getRight());
+		}
+		return found;
+	}
+	
 	@Override
 	public BSTNode<T> minimum() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Not implemented yet!");
+		BSTNode<T> found = null;
+		if (!this.isEmpty()) {
+			found = this.searchMinimum(this.root);
+		}
+		return found;
+	}
+	
+	private BSTNode<T> searchMinimum(BSTNode<T> node) {
+		BSTNode<T> found = null;
+		if (!node.getLeft().isEmpty()) {
+			found = this.searchMinimum((BSTNode) node.getLeft());
+		}
+		return found;
 	}
 
 	@Override
@@ -106,8 +129,17 @@ public class BSTImpl<T extends Comparable<T>> implements BST<T> {
 
 	@Override
 	public void remove(T element) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Not implemented yet!");
+		if (element != null) {
+			BSTNode<T> found = this.search(element);
+			if (found != null) {
+				if (found.isLeaf() && found.getParent().equals(found)) {
+					this.root = new BSTNode<T>();
+				}
+				else if (found.isLeaf()) {
+					BSTNode<T> parent = (BSTNode<T>) found.getParent();
+				}
+			}
+		}
 	}
 
 	@Override
